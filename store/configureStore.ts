@@ -1,25 +1,32 @@
 import { configureStore, getDefaultMiddleware } from "@reduxjs/toolkit";
-import createSagaMiddleware from "redux-saga";
+import { createWrapper } from "next-redux-wrapper";
+import createSagaMiddleware, { Task } from "redux-saga";
 import reducer from "../reducers";
 import rootSaga from "../sagas";
+import { Store } from "redux";
 
-const sagaMiddleware = createSagaMiddleware();
+interface SagaStore extends Store {
+    sagaTask?: Task;
+}
 
-const store = configureStore({
-    reducer,
-    devTools: true,
-    middleware: [
-        ...getDefaultMiddleware({ thunk: false, serializableCheck: false }),
-        sagaMiddleware,
-    ],
+const store = () => {
+    const devMode = process.env.NODE_ENV === "development"; // 개발모드
+    const sagaMiddleware = createSagaMiddleware();
+    const store = configureStore({
+        reducer: reducer,
+        middleware: [sagaMiddleware],
+        devTools: devMode,
+    });
+
+    // Next Redux Toolkit 에서 saga를 사용해야할 때
+    (store as SagaStore).sagaTask = sagaMiddleware.run(rootSaga);
+
+    return store;
+};
+
+export const wrapper = createWrapper(store, {
+    // 이 부분이 true면 디버그때 자세한 설명이 나옵니다. (개발할때는 true로)
+    debug: process.env.NODE_ENV === "development",
 });
-
-sagaMiddleware.run(rootSaga);
-
-// export type AppDispatch = typeof store.dispatch;
-// export type RootState = ReturnType<typeof store.getState>;
-
-export type AppDispatch = typeof store.dispatch;
-export type RootState = ReturnType<typeof store.getState>;
 
 export default store;
