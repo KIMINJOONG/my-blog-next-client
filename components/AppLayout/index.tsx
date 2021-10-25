@@ -5,6 +5,8 @@ import styled from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBars } from "@fortawesome/free-solid-svg-icons";
 import Link from "next/link";
+import { useSelector } from "react-redux";
+import { authSelector } from "../../features/Auth/slice";
 
 interface IProps {
     children: React.ReactNode;
@@ -69,9 +71,7 @@ const ToggleButtton = styled.a`
 const AppLayout = ({ children }: IProps) => {
     const [isToggleMenuButton, setIsToggleMenuButton] =
         useState<boolean>(false);
-    const onClickPage = useCallback((path: string) => {
-        Router.push(path);
-    }, []);
+    const { me } = useSelector(authSelector.getMe);
     return (
         <div>
             <Nav>
@@ -91,9 +91,15 @@ const AppLayout = ({ children }: IProps) => {
                         <a href="">메뉴2</a>
                     </li>
                     <li>
-                        <Link href="/login" prefetch={false}>
-                            <a href="">로그인</a>
-                        </Link>
+                        {me ? (
+                            <Link href="/login" prefetch={false}>
+                                <a href="">로그아웃</a>
+                            </Link>
+                        ) : (
+                            <Link href="/login" prefetch={false}>
+                                <a href="">로그인</a>
+                            </Link>
+                        )}
                     </li>
                 </Menu>
 

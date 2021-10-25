@@ -3,16 +3,17 @@ import axios, { AxiosError, AxiosResponse } from "axios";
 import { all, fork, put, takeLatest, call } from "redux-saga/effects";
 import { authAction } from "./slice";
 import Cookies from "js-cookie";
+import { ILoginResponse } from "../../types/response";
 
-function getMeToken() {
-    const token = Cookies.get("token");
-    const Authorization = token ? token : "";
-    return Authorization;
-}
+// function getMeToken() {
+//     const token = Cookies.get("token");
+//     const Authorization = token ? token : "";
+//     return Authorization;
+// }
 
 function getMeAPI() {
-    const Authorization = getMeToken();
-    return axios.get("/auth/me", { headers: { Authorization } });
+    // const Authorization = getMeToken();
+    return axios.get("/auth/me");
 }
 
 function* getMe() {

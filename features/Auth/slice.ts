@@ -1,5 +1,6 @@
 import { createSelector, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from "../../reducers";
+import { ILoginResponse } from "../../types/response";
 
 type State = {
     loginLoading: boolean;
@@ -30,7 +31,6 @@ const reducers = {
     getMeSuccess: (state: State, action: PayloadAction<IUser>) => {
         state.getMeLoading = false;
         state.getMeDone = true;
-
         state.me = action.payload;
     },
     getMeFailure: (state: State, { payload: error }: any) => {

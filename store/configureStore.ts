@@ -1,7 +1,7 @@
-import { configureStore, getDefaultMiddleware } from "@reduxjs/toolkit";
+import { configureStore } from "@reduxjs/toolkit";
 import { createWrapper } from "next-redux-wrapper";
 import createSagaMiddleware, { Task } from "redux-saga";
-import reducer from "../reducers";
+import { reducer } from "../reducers";
 import rootSaga from "../sagas";
 import { Store } from "redux";
 
