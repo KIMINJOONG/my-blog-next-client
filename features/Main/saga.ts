@@ -4,15 +4,16 @@ import { all, fork, put, takeLatest, call } from "redux-saga/effects";
 import { IBoardsResponse } from "../../types/response";
 import { mainAction } from "./slice";
 
-function loadBoardsAPI() {
-    return axios.get("/boards");
+function loadBoardsAPI(query: string) {
+    return axios.get(`/boards?${query}`);
 }
 
-function* loadBoards() {
+function* loadBoards(action: PayloadAction<string>) {
     const { loadBoardsSuccess, loadBoardsFailure } = mainAction;
     try {
         const result: AxiosResponse<IBoardsResponse> = yield call(
-            loadBoardsAPI
+            loadBoardsAPI,
+            action.payload
         );
         yield put(loadBoardsSuccess(result.data));
     } catch (error: any | AxiosError) {

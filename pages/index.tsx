@@ -25,7 +25,7 @@ export const getServerSideProps = wrapper.getServerSideProps(
                 axios.defaults.headers!.Authorization = "";
             }
             store.dispatch(authAction.getMeRequest());
-            store.dispatch(mainAction.loadBoardsRequest());
+            store.dispatch(mainAction.loadBoardsRequest("limit=5"));
 
             store.dispatch(END);
 

@@ -19,7 +19,7 @@ const initialState: State = {
 };
 
 const reducers = {
-    loadBoardsRequest: (state: State) => {
+    loadBoardsRequest: (state: State, _action: PayloadAction<string>) => {
         state.loadBoardsLoading = true;
     },
     loadBoardsSuccess: (
