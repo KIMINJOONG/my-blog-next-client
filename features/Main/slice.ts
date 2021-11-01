@@ -72,6 +72,6 @@ export const main = mainSlice.name;
 export const mainReducer = mainSlice.reducer;
 export const mainAction = mainSlice.actions;
 
-export const authSelector = {
+export const mainSelector = {
     boards: (state: RootState) => selectBoardsState(state[main]),
 };

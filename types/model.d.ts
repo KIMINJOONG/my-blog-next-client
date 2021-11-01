@@ -8,12 +8,14 @@ interface IUser {
 }
 
 interface IBoard {
+    id: number;
     title: string;
     content: string;
     view: string;
     categoryId: number;
     category: ICategory;
     boardHashtag?: IHashtag[];
+    createdAt: string;
 }
 
 interface ICategory {
