@@ -8,3 +8,7 @@ export interface IBoardsResponse {
     totalCount: number;
     boards: Board[];
 }
+
+export interface ILoadCategoriesResponse {
+    data: ICategory[];
+}

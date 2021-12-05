@@ -19,9 +19,12 @@ interface IBoard {
 }
 
 interface ICategory {
+    id: number;
     code: number;
     name: string;
     boards: IBoard[];
+    createdAt: string;
+    updatedAt: string;
 }
 
 interface IHashtag {

@@ -25,6 +25,9 @@ const initialState: State = {
 };
 
 const reducers = {
+    getMeInit: (state: State) => {
+        state.me = null;
+    },
     getMeRequest: (state: State) => {
         state.getMeLoading = true;
     },

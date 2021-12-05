@@ -8,10 +8,6 @@ type State = {
     loadBoardsError: null | any;
     boards: IBoard[];
     totalCount: number;
-    loadCategoriesLoading: boolean;
-    loadCategoriesDone: boolean;
-    loadCategoriesError: null | any;
-    categories: ICategory[];
 };
 
 const initialState: State = {
@@ -20,26 +16,9 @@ const initialState: State = {
     loadBoardsError: null,
     boards: [],
     totalCount: 0,
-    loadCategoriesLoading: false,
-    loadCategoriesDone: false,
-    loadCategoriesError: null,
-    categories: [],
 };
 
 const reducers = {
-    loadCategoriesRequest: (state: State) => {
-        state.loadCategoriesLoading = true;
-    },
-    loadCategoriesSuccess: (state: State, action: PayloadAction<any>) => {
-        state.loadCategoriesLoading = false;
-        state.loadCategoriesDone = true;
-        state.categories = action.payload;
-    },
-    loadCategoriesFailure: (state: State, { payload: error }: any) => {
-        state.loadCategoriesLoading = false;
-        state.loadCategoriesDone = false;
-        state.loadCategoriesError = error;
-    },
     loadBoardsRequest: (state: State, _action: PayloadAction<string>) => {
         state.loadBoardsLoading = true;
     },
@@ -59,8 +38,8 @@ const reducers = {
     },
 };
 
-const name: string = "main";
-export const mainSlice = createSlice({
+const name: string = "board";
+export const boardSlice = createSlice({
     name,
     initialState,
     reducers,
@@ -89,31 +68,10 @@ const selectBoardsState = createSelector(
     }
 );
 
-const selectCategoriesState = createSelector(
-    (state: State) => state.loadCategoriesLoading,
-    (state: State) => state.loadCategoriesDone,
-    (state: State) => state.loadCategoriesError,
-    (state: State) => state.categories,
-    (
-        loadCategoriesLoading,
-        loadCategoriesDone,
-        loadCategoriesError,
-        categories
-    ) => {
-        return {
-            loadCategoriesLoading,
-            loadCategoriesDone,
-            loadCategoriesError,
-            categories,
-        };
-    }
-);
+export const board = boardSlice.name;
+export const boardReducer = boardSlice.reducer;
+export const boardAction = boardSlice.actions;
 
-export const main = mainSlice.name;
-export const mainReducer = mainSlice.reducer;
-export const mainAction = mainSlice.actions;
-
-export const mainSelector = {
-    boards: (state: RootState) => selectBoardsState(state[main]),
-    categories: (state: RootState) => selectCategoriesState(state[main]),
+export const boardSelector = {
+    boards: (state: RootState) => selectBoardsState(state[board]),
 };

@@ -12,6 +12,7 @@ import { formatDate } from "../util/date";
 
 const Home: NextPage = () => {
     const { boards } = useSelector(mainSelector.boards);
+
     return (
         <AppLayout>
             {boards.map((board) => (
@@ -20,7 +21,6 @@ const Home: NextPage = () => {
                     style={{
                         boxShadow: "1px 2px 4px 0 rgba(0, 0, 0, 0.1)",
                         backgroundColor: "#ffffff",
-                        padding: 20,
                         marginTop: "24px",
                     }}
                 >
@@ -59,7 +59,7 @@ const Home: NextPage = () => {
                     <div
                         style={{ display: "flex", justifyContent: "flex-end" }}
                     >
-                        <Link href={`boards/`} prefetch={false}>
+                        <Link href={`/boards/${board.id}`} prefetch={false}>
                             <a
                                 style={{
                                     fontFamily: "SFProText",
@@ -83,7 +83,7 @@ const Home: NextPage = () => {
 
 export const getServerSideProps = wrapper.getServerSideProps(
     (store) =>
-        async ({ req, res, ...etc }) => {
+        async ({ req }) => {
             const { token } = req.cookies;
             if (token) {
                 axios.defaults.headers!.Authorization = token;
@@ -93,6 +93,7 @@ export const getServerSideProps = wrapper.getServerSideProps(
             }
             store.dispatch(authAction.getMeRequest());
             store.dispatch(mainAction.loadBoardsRequest("limit=5"));
+            store.dispatch(mainAction.loadCategoriesRequest());
 
             store.dispatch(END);
 

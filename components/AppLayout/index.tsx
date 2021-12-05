@@ -1,12 +1,14 @@
 import React, { useCallback, useState } from "react";
 import Image from "next/image";
-import Router from "next/router";
 import styled from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faBars } from "@fortawesome/free-solid-svg-icons";
 import Link from "next/link";
-import { useSelector } from "react-redux";
-import { authSelector } from "../../features/Auth/slice";
+import { useDispatch, useSelector } from "react-redux";
+import { authAction, authSelector } from "../../features/Auth/slice";
+import { mainSelector } from "../../features/Main/slice";
+import { faBars } from "@fortawesome/free-solid-svg-icons";
+import Cookies from "js-cookie";
+import Router from "next/router";
 
 interface IProps {
     children: React.ReactNode;
@@ -53,30 +55,51 @@ const Menu = styled.ul`
         }
 
         & > li:hover {
-            background-color: black;
+            background-color: #03e0c5;
+        }
+    }
+`;
+
+const MenuItem = styled.li`
+    color: black;
+    font-weight: bold;
+    @media screen and (max-width: 768px) {
+        & > li:hover {
+            color: #fff;
         }
     }
 `;
 
 const ToggleButtton = styled.a`
-    display: block;
+    display: none;
     position: absolute;
-    right: 32px;
-    font-size: 50px;
+    width: 25px;
+    right: 10px;
+    border-width: 1px;
     @media screen and (max-width: 768px) {
         display: block;
     }
 `;
 
 const AppLayout = ({ children }: IProps) => {
+    const dispatch = useDispatch();
     const [isToggleMenuButton, setIsToggleMenuButton] =
         useState<boolean>(false);
     const { me } = useSelector(authSelector.getMe);
+    const { categories } = useSelector(mainSelector.categories);
+
+    const onSubmitLogout = useCallback(() => {
+        Cookies.remove("token");
+        dispatch(authAction.getMeInit());
+        alert("로그아웃 되었습니다.");
+        Router.push("/");
+    }, [dispatch]);
     return (
         <div>
             <Nav>
                 <LogoWrapper style={{ flex: 1 }}>
                     <Image
+                        onClick={() => Router.push("/")}
                         src="/logo.png"
                         alt={"logo.png"}
                         width={200}
@@ -84,23 +107,25 @@ const AppLayout = ({ children }: IProps) => {
                     />
                 </LogoWrapper>
                 <Menu isToggleMenuButton={isToggleMenuButton}>
-                    <li>
-                        <a href="">메뉴1</a>
-                    </li>
-                    <li>
-                        <a href="">메뉴2</a>
-                    </li>
-                    <li>
-                        {me ? (
-                            <Link href="/login" prefetch={false}>
-                                <a href="">로그아웃</a>
+                    {categories.map((category) => (
+                        <MenuItem key={category.id}>
+                            <Link href={`/boards?category=${category.id}`}>
+                                <a href="">{category.name}</a>
                             </Link>
+                        </MenuItem>
+                    ))}
+
+                    <MenuItem>
+                        {me ? (
+                            <span onClick={() => onSubmitLogout()}>
+                                로그아웃
+                            </span>
                         ) : (
                             <Link href="/login" prefetch={false}>
                                 <a href="">로그인</a>
                             </Link>
                         )}
-                    </li>
+                    </MenuItem>
                 </Menu>
 
                 <ToggleButtton
@@ -109,7 +134,7 @@ const AppLayout = ({ children }: IProps) => {
                     <FontAwesomeIcon icon={faBars} />
                 </ToggleButtton>
             </Nav>
-            <div>{children}</div>
+            <div style={{ padding: 20 }}>{children}</div>
         </div>
     );
 };

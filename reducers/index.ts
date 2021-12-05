@@ -1,11 +1,13 @@
 import { combineReducers, AnyAction } from "@reduxjs/toolkit";
 import { HYDRATE } from "next-redux-wrapper";
 import { auth, authReducer } from "../features/Auth/slice";
+import { board, boardReducer } from "../features/Board/slice";
 import { main, mainReducer } from "../features/Main/slice";
 
 const rootReducer = combineReducers({
     [auth]: authReducer,
     [main]: mainReducer,
+    [board]: boardReducer,
 });
 
 export const reducer = (state: any, action: AnyAction) => {
