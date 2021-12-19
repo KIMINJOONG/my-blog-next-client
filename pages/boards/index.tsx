@@ -4,8 +4,16 @@ import React from "react";
 import { useSelector } from "react-redux";
 import styled from "styled-components";
 import AppLayout from "../../components/AppLayout";
+import { authAction } from "../../features/Auth/slice";
 import { boardAction, boardSelector } from "../../features/Board/slice";
+import { mainAction } from "../../features/Main/slice";
 import { wrapper } from "../../store/configureStore";
+import Link from "next/link";
+import Router from "next/router";
+
+interface IListStyle {
+    childTextAlign: string;
+}
 
 const List = styled.ul`
     list-style: none;
@@ -15,41 +23,29 @@ const List = styled.ul`
 
     li:nth-child(1) {
         float: left;
-        width: 5%;
-        text-align: center;
+        width: 90%;
+        padding: 0px 5px;
+        text-align: ${(props: IListStyle) => props.childTextAlign};
     }
 
     li:nth-child(2) {
         float: left;
-        width: 90%;
-        padding: 0px 5px;
-        text-align: center;
-    }
-
-    li:nth-child(3) {
-        float: left;
         width: 5%;
-        text-align: center;
+        text-align: ${(props: IListStyle) => props.childTextAlign};
     }
 
     @media screen and (max-width: 768px) {
         li:nth-child(1) {
             float: left;
-            width: 10%;
-            text-align: center;
+            width: 75%;
+            padding: 0px 5px;
+            text-align: ${(props: IListStyle) => props.childTextAlign};
         }
 
         li:nth-child(2) {
             float: left;
-            width: 65%;
-            padding: 0px 5px;
-            text-align: center;
-        }
-
-        li:nth-child(3) {
-            float: left;
             width: 25%;
-            text-align: center;
+            text-align: ${(props: IListStyle) => props.childTextAlign};
         }
     }
 `;
@@ -59,10 +55,12 @@ const Boards = () => {
     return (
         <AppLayout>
             <div>
-                <List>
-                    <li>
-                        <span>번호</span>
-                    </li>
+                <Link href={"/boards/create"} prefetch={false}>
+                    <a>글쓰기</a>
+                </Link>
+            </div>
+            <div>
+                <List childTextAlign="center">
                     <li>
                         <span>제목</span>
                     </li>
@@ -71,10 +69,11 @@ const Boards = () => {
                     </li>
                 </List>
                 {boards.map((board) => (
-                    <List key={board.id}>
-                        <li>
-                            <span>{board.id}</span>
-                        </li>
+                    <List
+                        childTextAlign="left"
+                        key={board.id}
+                        onClick={() => Router.push(`/boards/${board.id}`)}
+                    >
                         <li>
                             <span style={{ fontSize: 13 }}>{board.title}</span>
                         </li>
@@ -103,11 +102,14 @@ export const getServerSideProps = wrapper.getServerSideProps(
 
             const limit = 10;
             const { category } = query;
+            store.dispatch(authAction.getMeRequest());
             store.dispatch(
                 boardAction.loadBoardsRequest(
                     `category=${category}&limit=${limit}`
                 )
             );
+            store.dispatch(mainAction.loadCategoriesRequest());
+
             store.dispatch(END);
 
             await store.sagaTask.toPromise();

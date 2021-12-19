@@ -2,6 +2,7 @@ import "../styles/globals.css";
 import type { AppProps } from "next/app";
 import { wrapper } from "../store/configureStore";
 import Head from "next/head";
+import "suneditor/dist/css/suneditor.min.css";
 
 function MyApp({ Component, pageProps }: AppProps) {
     return (

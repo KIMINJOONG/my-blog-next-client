@@ -95,7 +95,13 @@ const AppLayout = ({ children }: IProps) => {
         Router.push("/");
     }, [dispatch]);
     return (
-        <div>
+        <div
+            style={{
+                height: "100vh",
+                display: "flex",
+                flexDirection: "column",
+            }}
+        >
             <Nav>
                 <LogoWrapper style={{ flex: 1 }}>
                     <Image
@@ -134,7 +140,16 @@ const AppLayout = ({ children }: IProps) => {
                     <FontAwesomeIcon icon={faBars} />
                 </ToggleButtton>
             </Nav>
-            <div style={{ padding: 20 }}>{children}</div>
+            <div
+                style={{
+                    padding: 20,
+                    display: "flex",
+                    flex: 1,
+                    flexDirection: "column",
+                }}
+            >
+                {children}
+            </div>
         </div>
     );
 };
