@@ -13,8 +13,6 @@ const Create = () => {
     const [content, setContent] = useState<string>("");
     const [hashtags, setHashtags] = useState<string>("");
 
-    const sunEditorRef = useRef();
-
     const handleImageUploadBefore = (files, info, uploadHandler) => {
         const formData = new FormData();
         formData.append("images", files[0]);
@@ -32,35 +30,16 @@ const Create = () => {
             });
     };
 
-    const onDeleteImage = (
-        targetElement,
-        index,
-        state: "create" | "delete",
-        info,
-        remainingFilesCount,
-        core
-    ) => {
-        if (state === "delete") {
-            console.log(targetElement);
-            console.log(index);
-            console.log(info);
-            console.log(remainingFilesCount);
-            console.log(core);
-            // console.log(sunEditorRef.current);
-            // let removeditem = sunEditorRef.current.imageList.splice(
-            //     findIndex(sunEditorRef.current.imageList, index),
-            //     1
-            // );
-            // console.log(removeditem);
-            // const spiltS3Url = removeditem[0].src;
-            // const url = spilts3Url.split(".com/");
-            // console.log(targetElement, index, info, remainingFilesCount, core);
-        }
-    };
-
-    const onSubmitCreateBoard = useCallback(() => {
-        console.log(content);
-    }, [content]);
+    const onSubmitCreateBoard = useCallback(async () => {
+        const createBoardRequest: ICreateBoardRequest = {
+            title,
+            content,
+            hashtags,
+            categoryId: 1,
+        };
+        const response = await axios.post("boards", createBoardRequest);
+        console.log(response);
+    }, [content, hashtags, title]);
 
     return (
         <AppLayout>
@@ -75,8 +54,6 @@ const Create = () => {
             </div>
             <div style={{ marginTop: 10, flex: 1 }}>
                 <SunEditor
-                    lang={"ko"}
-                    ref={sunEditorRef}
                     onImageUploadBefore={handleImageUploadBefore}
                     onChange={setContent}
                     setOptions={{

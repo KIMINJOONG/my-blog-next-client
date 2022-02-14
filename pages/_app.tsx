@@ -3,6 +3,9 @@ import type { AppProps } from "next/app";
 import { wrapper } from "../store/configureStore";
 import Head from "next/head";
 import "suneditor/dist/css/suneditor.min.css";
+import { axiosConfigSetting } from "../util/api";
+
+axiosConfigSetting();
 
 function MyApp({ Component, pageProps }: AppProps) {
     return (

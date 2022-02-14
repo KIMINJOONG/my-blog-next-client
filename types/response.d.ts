@@ -6,9 +6,13 @@ export interface ILoginResponse {
 
 export interface IBoardsResponse {
     totalCount: number;
-    boards: Board[];
+    boards: IBoard[];
 }
 
 export interface ILoadCategoriesResponse {
     data: ICategory[];
+}
+
+export interface ILoadBoardResponse {
+    data: IBoard;
 }
