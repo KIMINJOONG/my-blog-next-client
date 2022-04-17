@@ -22,18 +22,21 @@ const Home: NextPage = () => {
                         boxShadow: "1px 2px 4px 0 rgba(0, 0, 0, 0.1)",
                         backgroundColor: "#ffffff",
                         marginTop: "24px",
+                        padding: 10,
                     }}
                 >
                     <div
                         style={{
-                            padding: 5,
                             display: "inline-block",
-                            borderRadius: "16px",
+                            borderRadius: "8px",
                             backgroundColor: "#03e0c5",
                             textAlign: "center",
+                            verticalAlign: "center",
+                            width: 40,
+                            height: 20,
                         }}
                     >
-                        <span style={{ color: "#ffffff" }}>
+                        <span style={{ color: "#ffffff", fontSize: 12 }}>
                             {board.category?.name}
                         </span>
                     </div>

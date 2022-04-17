@@ -18,6 +18,20 @@ interface IMenuProps {
     isToggleMenuButton: boolean;
 }
 
+const Container = styled.div`
+    max-width: 1200px;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    margin: 0 auto;
+
+    @media screen and (max-width: 768px) {
+        height: 100vh;
+        display: flex;
+        flex-direction: column;
+    }
+`;
+
 const Nav = styled.nav`
     display: flex;
     align-items: center;
@@ -95,7 +109,7 @@ const AppLayout = ({ children }: IProps) => {
         Router.push("/");
     }, [dispatch]);
     return (
-        <div
+        <Container
             style={{
                 height: "100vh",
                 display: "flex",
@@ -115,7 +129,9 @@ const AppLayout = ({ children }: IProps) => {
                 <Menu isToggleMenuButton={isToggleMenuButton}>
                     {categories.map((category) => (
                         <MenuItem key={category.id}>
-                            <Link href={`/boards?category=${category.id}`}>
+                            <Link
+                                href={`/boards?category=${category.id}&limit=10&page=1`}
+                            >
                                 <a href="">{category.name}</a>
                             </Link>
                         </MenuItem>
@@ -150,7 +166,7 @@ const AppLayout = ({ children }: IProps) => {
             >
                 {children}
             </div>
-        </div>
+        </Container>
     );
 };
 
