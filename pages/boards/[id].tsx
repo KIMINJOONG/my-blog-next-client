@@ -1,6 +1,6 @@
 import { useRouter } from "next/router";
 import AppLayout from "../../components/AppLayout";
-import ReactHtmlParser from "react-html-parser";
+import Parser from "html-react-parser";
 import { wrapper } from "../../store/configureStore";
 import axios, { AxiosResponse } from "axios";
 import { END } from "redux-saga";
@@ -28,7 +28,7 @@ const Board = ({ board }: IProps) => {
                     </p>
                 </div>
                 <div>
-                    <p>{board && ReactHtmlParser(board.content)}</p>
+                    <p>{board && Parser(board.content)}</p>
                 </div>
             </div>
         </AppLayout>
