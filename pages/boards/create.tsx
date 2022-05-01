@@ -13,7 +13,11 @@ const Create = () => {
     const [content, setContent] = useState<string>("");
     const [hashtags, setHashtags] = useState<string>("");
 
-    const handleImageUploadBefore = (files, info, uploadHandler) => {
+    const handleImageUploadBefore = (
+        files: any[],
+        info: any,
+        uploadHandler: any
+    ) => {
         const formData = new FormData();
         formData.append("images", files[0]);
         axios

@@ -134,7 +134,7 @@ const Boards = () => {
 };
 
 export const getServerSideProps = wrapper.getServerSideProps(
-    (store) =>
+    (store: any) =>
         async ({ req, query }) => {
             const { token } = req.cookies;
             if (token) {
@@ -158,6 +158,8 @@ export const getServerSideProps = wrapper.getServerSideProps(
             store.dispatch(END);
 
             await store.sagaTask.toPromise();
+
+            return { props: {} };
         }
 );
 
