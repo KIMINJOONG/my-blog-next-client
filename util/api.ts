@@ -2,8 +2,9 @@ import axios, { AxiosRequestConfig } from "axios";
 import Cookies from "js-cookie";
 
 export const axiosConfigSetting = () => {
-    axios.defaults.baseURL = "http://localhost:4000/";
-    // 'http://ec2-3-37-143-67.ap-northeast-2.compute.amazonaws.com:8080/_api/v1/';
+    axios.defaults.baseURL =
+        // "http://localhost:4000/";
+        "https://api.kohubi.xyz/";
 
     axios.interceptors.request.use(
         async (config: AxiosRequestConfig<any>) => {
